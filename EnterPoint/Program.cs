@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using GeneratorLib;
 
 namespace EnterPoint
@@ -12,11 +13,12 @@ namespace EnterPoint
             List<string> fileNames = new List<string>();
             fileNames.Add("TestClass1.txt");
             fileNames.Add("TestClass2.txt");
-            
+            var a = Directory.GetCurrentDirectory();
             Pipeline generator = new Pipeline(configuration);
-            string outputFileName = "Output.txt";
+            string outputFileName = "Output";
             generator.CreatePipeline(fileNames, outputFileName).Wait();
             Console.WriteLine($"The generated tests was created");
+            
         }
     }
 }

@@ -11,7 +11,6 @@ namespace GeneratorLib
     {
         public List<GeneratedModel> Generate(ParsingResultStructure parsingResult)
         {
-            string fileName, content;
             List<GeneratedModel> generationResult = new List<GeneratedModel>();
 
             foreach (ClassInfo classInfo in parsingResult.Classes)
@@ -31,8 +30,8 @@ namespace GeneratorLib
                         )
                      );
 
-                fileName = classInfo.Name+"Test.dat";
-                content = unit.NormalizeWhitespace().ToFullString();
+                var fileName = $"{classInfo.Name}Test.dat";
+                var content = unit.NormalizeWhitespace().ToFullString();
 
                 generationResult.Add(new GeneratedModel(fileName, content));
             }
@@ -61,16 +60,6 @@ namespace GeneratorLib
             return new SyntaxList<UsingDirectiveSyntax>(usings);
         }
 
-        private AttributeListSyntax GetAttributesDeclarations(string identifier)
-        {
-            AttributeListSyntax attributes = AttributeList(
-                SingletonSeparatedList<AttributeSyntax>(
-                    Attribute(
-                        IdentifierName(identifier))));
-
-            return attributes;
-        }
-
         private SyntaxList<MemberDeclarationSyntax> GetMembersDeclarations(ClassInfo classInfo)
         {
             List<MemberDeclarationSyntax> methods = new List<MemberDeclarationSyntax>();
@@ -84,7 +73,6 @@ namespace GeneratorLib
 
         private MethodDeclarationSyntax GetMethodDeclaration(MethodInfo method)
         {
-            MethodDeclarationSyntax methodDeclaration;
             List<StatementSyntax> bodyMembers = new List<StatementSyntax>();
 
             bodyMembers.Add(
@@ -93,10 +81,10 @@ namespace GeneratorLib
                         GetAssertFail())
                     .WithArgumentList(GetMemberArgs())));
 
-            methodDeclaration = MethodDeclaration(
-                PredefinedType(
-                    Token(SyntaxKind.VoidKeyword)),
-                Identifier(method.Name+"Test"))
+            var methodDeclaration = MethodDeclaration(
+                    PredefinedType(
+                        Token(SyntaxKind.VoidKeyword)),
+                    Identifier(method.Name+"Test"))
                 .WithAttributeLists(
                     SingletonList<AttributeListSyntax>(
                         AttributeList(

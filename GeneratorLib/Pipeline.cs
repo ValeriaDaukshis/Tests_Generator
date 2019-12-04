@@ -17,6 +17,7 @@ namespace GeneratorLib
             this._configuration = configuration;
             _reader = new FileReader();
             _writer = new FileWriter();
+            
         }
         
         public async Task CreatePipeline(IEnumerable<string> inputFiles, string outputFile)
