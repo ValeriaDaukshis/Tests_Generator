@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorLib", "GeneratorLib\GeneratorLib.csproj", "{0B98410A-9E56-4983-AC73-E77FA3BBA4EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnterPoint", "EnterPoint\EnterPoint.csproj", "{B3BA78AB-F29B-4722-91D7-21598AF9EC2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{0B98410A-9E56-4983-AC73-E77FA3BBA4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B98410A-9E56-4983-AC73-E77FA3BBA4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B98410A-9E56-4983-AC73-E77FA3BBA4EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BA78AB-F29B-4722-91D7-21598AF9EC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BA78AB-F29B-4722-91D7-21598AF9EC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BA78AB-F29B-4722-91D7-21598AF9EC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BA78AB-F29B-4722-91D7-21598AF9EC2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
