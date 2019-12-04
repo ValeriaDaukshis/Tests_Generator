@@ -5,7 +5,7 @@ namespace GeneratorLib
 {
     public class FileReader
     {
-        public static async Task<string> Read(string fileName)
+        public async Task<string> Read(string fileName)
         {
             using (var reader = new StreamReader(new FileStream(fileName, FileMode.Open)))
             {
