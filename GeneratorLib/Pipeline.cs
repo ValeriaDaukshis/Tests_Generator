@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks.Dataflow;
+using GeneratorLib.Structure;
 
 namespace GeneratorLib
 {
@@ -10,11 +11,13 @@ namespace GeneratorLib
         private readonly string _outputFile;
         private static FileReader _reader;
         private static FileWriter _writer;
+        private PipelineConfiguration configuration;
         
-        public Pipeline(string inputFile, string outputFile)
+        public Pipeline(string inputFile, string outputFile, PipelineConfiguration configuration)
         {
             this._inputFile = inputFile;
             this._outputFile = outputFile;
+            this.configuration = configuration;
             _reader = new FileReader();
             _writer = new FileWriter();
         }
@@ -25,24 +28,31 @@ namespace GeneratorLib
             var step1 = new TransformBlock<string, string>((data) => _reader.Read(_inputFile) , 
                 new ExecutionDataflowBlockOptions()
                 {
-                    MaxDegreeOfParallelism = 3,
-                    BoundedCapacity = 5,
+                    MaxDegreeOfParallelism = configuration.MaxReadingTasks,
                 });
-            var step2 = new TransformBlock<string, IEnumerable<GeneratedModel>>((word) => new TestGenerator().Generate(word), 
+            var step2 = new TransformBlock<string, List<GeneratedModel>>((word) => GenerateTestClasses(word), 
                 new ExecutionDataflowBlockOptions()
                 {
-                    MaxDegreeOfParallelism = 1,
-                    BoundedCapacity = 13,
+                    MaxDegreeOfParallelism = configuration.MaxProcessingTasks,
                 });
             var step3 = new ActionBlock<IEnumerable<GeneratedModel>>((text) =>_writer.Write(_outputFile, text), 
                 new ExecutionDataflowBlockOptions()
                 {
-                    MaxDegreeOfParallelism = 11,
-                    BoundedCapacity = 6,
+                    MaxDegreeOfParallelism = configuration.MaxWritingTasks,
                 });
             step1.LinkTo(step2, linkOptions);
             step2.LinkTo(step3, linkOptions);
             return step1;
+        }
+        
+        private List<GeneratedModel> GenerateTestClasses(string sourceCode)
+        {
+            ParsingResultBuilder builder = new ParsingResultBuilder();
+            ParsingResultStructure result = builder.GetResult(sourceCode);
+            TestGenerator generator = new TestGenerator();
+            List<GeneratedModel> generatedTests = generator.Generate(result);
+
+            return generatedTests;
         }
     }
 }
