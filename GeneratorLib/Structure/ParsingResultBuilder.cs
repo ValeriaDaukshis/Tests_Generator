@@ -32,13 +32,17 @@ namespace GeneratorLib.Structure
 
         private List<MethodInfo> GetMethods(ClassDeclarationSyntax classDeclaration)
         {
+            HashSet<string> methodNameSet = new HashSet<string>();
             List<MethodInfo> methods = new List<MethodInfo>();
             
             foreach (MethodDeclarationSyntax methodDeclaration in classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 .Where((methodDeclaration) => methodDeclaration.Modifiers.Any((modifier) => modifier.IsKind(SyntaxKind.PublicKeyword))))
             {
                 var methodName = methodDeclaration.Identifier.ValueText;
-                methods.Add(new MethodInfo(methodName));
+                if(methodNameSet.Add(methodName))
+                {
+                    methods.Add(new MethodInfo(methodName));
+                }
             }
             return methods;
         }

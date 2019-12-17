@@ -18,7 +18,12 @@ namespace TestsGeneratorLib
         public Task Generate(string path)
         {
             //do simething      
-        }
+        }  
+        
+        public Task Generate(string path, string a)
+        {
+           //do simething      
+        }            
 
         private void GenerateTestClass(string sourceCode)
         {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using GeneratorLib;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
@@ -19,17 +16,19 @@ namespace GeneratorTests
         [SetUp]
         public void SetUp()
         {
-//            PipelineConfiguration configuration = new PipelineConfiguration(3, 3, 9);
-//            string a = Directory.GetCurrentDirectory();
+             PipelineConfiguration configuration = new PipelineConfiguration(3, 3, 9);
+            
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(GetType().Assembly.Location));
+            string a = Directory.GetCurrentDirectory();
 //            //string workPath = @"C:\Users\dauks\source\repos\Spp_lab4_Tests_Generator\TestsGenerator\GeneratorTests\";
-//            List<string> fileNames = new List<string>();
-//            fileNames.Add( "TestClass1.txt");
-//            
-//            Pipeline generator = new Pipeline(configuration);
-//            string outputFileName = "Output";
-//            generator.CreatePipeline(fileNames, outputFileName).Wait();
-//            var sourceCode = File.ReadAllText("TestsGeneratorTest.dat");
-            var sourceCode = File.ReadAllText(@"C:\Users\dauks\source\repos\Spp_lab4_Tests_Generator\TestsGenerator\EnterPoint\bin\Debug\Output.txt_TestsGeneratorTest.dat");
+            List<string> fileNames = new List<string>();
+            fileNames.Add("TestClass1.txt");
+            
+            Pipeline generator = new Pipeline(configuration);
+            string outputFileName = "Output";
+            generator.CreatePipeline(fileNames, outputFileName).Wait();
+            //var sourceCode = File.ReadAllText(@"C:\Users\dauks\source\repos\Spp_lab4_Tests_Generator\TestsGenerator\EnterPoint\bin\Debug\Output_TestsGeneratorTest.dat");
+            var sourceCode = File.ReadAllText("Output_TestsGeneratorTest.dat");
             
             var codeTree = CSharpSyntaxTree.ParseText(sourceCode);
             _root = codeTree.GetCompilationUnitRoot();

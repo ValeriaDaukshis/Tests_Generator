@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using GeneratorLib.Structure;
@@ -17,7 +16,6 @@ namespace GeneratorLib
             this._configuration = configuration;
             _reader = new FileReader();
             _writer = new FileWriter();
-            
         }
         
         public async Task CreatePipeline(IEnumerable<string> inputFiles, string outputFile)
@@ -33,7 +31,7 @@ namespace GeneratorLib
                 {
                     MaxDegreeOfParallelism = _configuration.MaxProcessingTasks,
                 });
-            var step3 = new ActionBlock<IEnumerable<GeneratedModel>>(text =>_writer.Write(outputFile, text), 
+            var step3 = new ActionBlock<List<GeneratedModel>>(text =>_writer.Write(outputFile, text), 
                 new ExecutionDataflowBlockOptions()
                 {
                     MaxDegreeOfParallelism = _configuration.MaxWritingTasks,

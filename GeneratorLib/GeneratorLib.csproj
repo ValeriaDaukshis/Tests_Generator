@@ -122,7 +122,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="FileReader.cs" />
-        <Compile Include="FileWithContent.cs" />
         <Compile Include="FileWriter.cs" />
         <Compile Include="Pipeline.cs" />
         <Compile Include="PipelineConfiguration.cs" />

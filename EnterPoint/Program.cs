@@ -13,12 +13,10 @@ namespace EnterPoint
             List<string> fileNames = new List<string>();
             fileNames.Add("TestClass1.txt");
             fileNames.Add("TestClass2.txt");
-            var a = Directory.GetCurrentDirectory();
             Pipeline generator = new Pipeline(configuration);
             string outputFileName = "Output";
             generator.CreatePipeline(fileNames, outputFileName).Wait();
-            Console.WriteLine($"The generated tests was created");
-            
+            Console.WriteLine("The generated tests was created");
         }
     }
 }

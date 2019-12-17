@@ -9,35 +9,6 @@ namespace GeneratorLib
 {
     public class TestGenerator
     {
-        public List<GeneratedModel> Generate(ParsingResultStructure parsingResult)
-        {
-            List<GeneratedModel> generationResult = new List<GeneratedModel>();
-
-            foreach (ClassInfo classInfo in parsingResult.Classes)
-            {
-                CompilationUnitSyntax unit = CompilationUnit()
-                    .WithUsings(GetUsingDeclarations(classInfo))
-                    .WithMembers(SingletonList<MemberDeclarationSyntax>(GetNamespaceDeclaration(classInfo)
-                        .WithMembers(SingletonList<MemberDeclarationSyntax>(ClassDeclaration(classInfo.Name + "Tests")
-                            .WithAttributeLists(
-                                SingletonList<AttributeListSyntax>(
-                                    AttributeList(
-                                        SingletonSeparatedList<AttributeSyntax>(
-                                            Attribute(
-                                                IdentifierName("TestClass")))) ))
-                            .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
-                            .WithMembers(GetMembersDeclarations(classInfo))))
-                        )
-                     );
-
-                var fileName = $"{classInfo.Name}Test.dat";
-                var content = unit.NormalizeWhitespace().ToFullString();
-
-                generationResult.Add(new GeneratedModel(fileName, content));
-            }
-            return generationResult;
-        }
-
         private NamespaceDeclarationSyntax GetNamespaceDeclaration(ClassInfo classInfo)
         {
             NamespaceDeclarationSyntax namespaceDeclaration = NamespaceDeclaration(QualifiedName(
@@ -95,6 +66,35 @@ namespace GeneratorLib
                 .WithBody(Block(bodyMembers));
 
             return methodDeclaration;       
+        }
+        
+        public List<GeneratedModel> Generate(ParsingResultStructure parsingResult)
+        {
+            List<GeneratedModel> generationResult = new List<GeneratedModel>();
+
+            foreach (ClassInfo classInfo in parsingResult.Classes)
+            {
+                CompilationUnitSyntax unit = CompilationUnit()
+                    .WithUsings(GetUsingDeclarations(classInfo))
+                    .WithMembers(SingletonList<MemberDeclarationSyntax>(GetNamespaceDeclaration(classInfo)
+                            .WithMembers(SingletonList<MemberDeclarationSyntax>(ClassDeclaration(classInfo.Name + "Tests")
+                                .WithAttributeLists(
+                                    SingletonList<AttributeListSyntax>(
+                                        AttributeList(
+                                            SingletonSeparatedList<AttributeSyntax>(
+                                                Attribute(
+                                                    IdentifierName("TestClass")))) ))
+                                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                                .WithMembers(GetMembersDeclarations(classInfo))))
+                        )
+                    );
+
+                var fileName = $"{classInfo.Name}Test.cs";
+                var content = unit.NormalizeWhitespace().ToFullString();
+
+                generationResult.Add(new GeneratedModel(fileName, content));
+            }
+            return generationResult;
         }
 
         private MemberAccessExpressionSyntax GetAssertFail()
